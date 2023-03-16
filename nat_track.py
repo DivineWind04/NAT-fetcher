@@ -3,13 +3,14 @@ import os
 import winreg
 import requests
 from lxml import etree
-import argparse
 from colorama import Fore, Back, Style
 from decimal import Decimal
 import traceback
+from time import time
+import subprocess
 
-VATSYS_MAPS_PATH_RELATIVE = r'vatSys Files\Profiles\ATOP Oakland\Maps'
-VATSYS_PROFILE_PATH_RELATIVE = r'vatSys Files\Profiles\ATOP Oakland'
+VATSYS_MAPS_PATH_RELATIVE = r'vatSys Files\Profiles\gaats-gander-shanwick-dataset\Maps'
+VATSYS_PROFILE_PATH_RELATIVE = r'vatSys Files\Profiles\gaats-gander-shanwick-dataset'
 
 NATS_API_URL = 'https://tracks.ganderoceanic.ca/data'
 
@@ -33,12 +34,14 @@ def error(error_message: str):
 def log(log_message: str):
     print(Fore.WHITE + Back.GREEN + 'LOG:' + Style.RESET_ALL + ' ' + log_message)
 
-def exit_with_wait():
-    input('Press enter key to exit...')
-    exit()
+def clean(coord):
+    if len(coord.split('.')[0]) > 3:
+        new_coord = coord[0:2]
+        return float(f"{new_coord}.5")
+    else:
+        return coord
 
 def find_vatsys_maps_dir():
-    # First we will try the registry method
     try:
         home_path = r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, home_path, access=winreg.KEY_READ)
@@ -50,35 +53,38 @@ def find_vatsys_maps_dir():
     except:
         pass
 
-    # If we failed to find the folder via registry, try with Path method
     try:
         full_dir = Path(str(Path.home()), 'Documents', VATSYS_MAPS_PATH_RELATIVE)
         if os.path.exists(full_dir):
             return full_dir
     except:
         pass
-    
-    # If we are here, we haven't found anything, so return None
+
     return None
 
-# def find_vatsys_exec():
+def find_vatsys_exec():
 
-#     Returns:
-#         A string with the path to the Maps folder if found. None if not found.
-#     """
-#     # Try the x86 folder first
-#     full_path = Path(os.environ['ProgramFiles(x86)'], 'vatSys', 'bin', 'vatSys.exe')
-#     if os.path.exists(full_path):
-#         return full_path
+    full_path = Path(os.environ['ProgramFiles(x86)'], 'vatSys', 'bin', 'vatSys.exe')
+    if os.path.exists(full_path):
+        return full_path
 
-#     # Next try the regular Program Files folder
-#     full_path = Path(os.environ['ProgramW6432'], 'vatSys', 'bin', 'vatSys.exe')
-#     if os.path.exists(full_path):
-#         return full_path
+    full_path = Path(os.environ['ProgramW6432'], 'vatSys', 'bin', 'vatSys.exe')
+    if os.path.exists(full_path):
+        return full_path
     
-#     # Return none if both fail
-#     return None
 
+    drives = [ chr(x) + ":" for x in range(65,91) if os.path.exists(chr(x) + ":") ]
+    for letter in drives:
+        for directory in os.listdir(f'{letter}/'):
+            try:
+                for folders in os.listdir(os.path.join(f'{letter}/', directory)):
+                    if folders == 'bin':
+                        if 'vatSys.exe' in (os.listdir(os.path.join(f'{letter}/', directory,folders))):
+                            return (os.path.join(f'{letter}/', directory, folders, 'vatSys.exe'))
+            except:
+                pass
+
+    return None
 
 
 def make_base_map_xml(map_attributes: dict[str, str] = DEFAULT_MAP_ATTRIBUTES) -> tuple[etree.Element, etree.Element]:
@@ -93,6 +99,9 @@ def coord_to_str(coord):
     coord = coord.split('/')
     coord_list = []
     for x in coord:
+        
+        x = clean(x)
+
         d = Decimal(str(x))
         integer_part = int(d) - 360 if int(d) > 180 else int(d)
         integer_part_str = str(integer_part)
@@ -104,6 +113,7 @@ def coord_to_str(coord):
         fractional_part_str = f'{fractional_part:.3f}'.lstrip('0').lstrip('-0')
         leader = '+' if integer_part > 0 else ''
         coord_list.append(leader + integer_part_str + fractional_part_str)
+
     
     return ''.join(coord_list)
 
@@ -115,46 +125,38 @@ def conversion_func(coord) -> str:
 
 
 def make_poly_xml(track_line: list[list[float]]) -> etree.Element:
-    # Create the empty elements
     poly_element = etree.Element(DEFAULT_POLY_ATTRIBUTES['Type'])
     point_element = etree.SubElement(poly_element, 'Point')
 
-    # Create all the point strings from the poly coords and add inside <Point> element
     point_strings = [conversion_func(coord) for coord in track_line]
     point_element.text = '/'.join(point_strings)
-    log('created polygon with ISO 6709 coordinates %s' % point_strings)
 
     return poly_element
 
 def make_label_xml(series_id_str, first_fix) -> etree.Element:
-    # Create Label element
     label_element = etree.Element('Label')
     
     point_element = etree.SubElement(label_element, 'Point')
     point_element.set('Name', series_id_str)
     point_element.text = first_fix
-    log('created label with ISO 6709 coordinates and label %s' % (series_id_str))
 
     return label_element
 
 def run(vatsys_maps_dir: str, output_filename: str):
-    log('running with output location %s' % Path(vatsys_maps_dir, output_filename))
+    log('Starting')
     
-    # Fetch Tracks from API
     try:
         r = requests.get(NATS_API_URL)
         tracks_json = r.json()
-        log('fetched XML from %s' % NATS_API_URL)
+        log('Nat tracks fetched.')
     except Exception as e:
-        error('could not fetch Tracks from API')
+        error('could not fetch tracks')
         traceback.print_exc()
-        exit_with_wait()
+        exit()
 
-    # Make the XML
     try:
-        # Make the base <Maps> and <Map> element
         maps_root, map_element = make_base_map_xml()
-        # Iterate over each NAT XML feature and make the Poly xml (<Infill> or <Line>). Add to <Map>
+
         muff_poly_coords = []
         airspace = etree.Element('Airspace')
         airways = etree.SubElement(airspace, 'Airways')
@@ -183,48 +185,33 @@ def run(vatsys_maps_dir: str, output_filename: str):
     except Exception:
         error('could not form XML')
         traceback.print_exc()
-        exit_with_wait()
+        exit()
     
     # Write output XML
     try:
         path = Path(vatsys_maps_dir, output_filename)
         etree.ElementTree(maps_root).write(path, pretty_print=True)
-        log('wrote XML file to %s' % path)
+        log('Saved XML file')
     except:
-        error('could not write output file to %s' % path)
+        error('Could not save XML!')
         traceback.print_exc()
-        exit_with_wait()
+        exit()
 
 
 if __name__ == '__main__':
 
-    ## Creating the argument parser
-    ## TODO: add options for verbosity? or to launch vatSys after? need to implement color option
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--mapsdir', help="location of vatSys Maps folder for ATOP Oakland profile")
-    parser.add_argument('--filename', help="full name of output XML file (including .xml)")
-    parser.add_argument('--exec', help="location of vatSys executable")
-    parser.add_argument('--color', help="name of vatSys color (from Colours.xml) to use for Tracks")
-    args = parser.parse_args()
-
-    # Get profile maps dir from command line first, or do auto. Fail out if we can't find
-    maps_dir = args.mapsdir if args.mapsdir is not None else find_vatsys_maps_dir()
+    maps_dir = find_vatsys_maps_dir()
     if maps_dir is None:
-        error('could not find suitable vatSys Maps folder for ATOP Oakland profile')
-        exit_with_wait()
+        error('could not find suitable vatSys Maps folder for Gander/Shanwick profile')
+        exit()
     
-    # Get output filename for command line first, or just default
-    filename = args.filename if args.filename is not None else DEFAULT_FILENAME
-
-    # We've got the maps_dir and filename now, so we can run
-    run(maps_dir, filename)
+    run(maps_dir, DEFAULT_FILENAME)
     
-    # Get the vatSys executable to run after
-    # exec_path = args.exec if args.exec is not None else find_vatsys_exec()
-    # if exec_path is None:
-    #     error('could not find suitable vatSys executable')
-    #     exit_with_wait()
-    # else:
-    #     log('opening vatSys executable at %s' % exec_path)
-    #     subprocess.Popen([exec_path])
-    #     exit_with_wait()
+    exec_path = find_vatsys_exec()
+    if exec_path is None:
+        error('could not find suitable vatSys executable')
+        exit()
+    else:
+        log(f'opening vatSys executable at {exec_path}')
+        subprocess.Popen([exec_path])
+        exit()
