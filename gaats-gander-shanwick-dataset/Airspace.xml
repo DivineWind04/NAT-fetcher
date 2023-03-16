@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Airspace>
+  <Airways>
+    <Airway Name="NATS">NICSO/+48.0-50.0/+50.0-40.0/+52.0-30.0/+54.0-20.0/DOGAL/BEXET</Airway>
+    <Airway Name="NATT">PORTI/+47.0-50.0/+49.0-40.0/+51.0-30.0/+53.0-20.0/MALOT/GISTI</Airway>
+    <Airway Name="NATU">SUPRY/+46.0-50.0/+48.0-40.0/+50.0-30.0/+52.0-20.0/LIMRI/XETBO</Airway>
+    <Airway Name="NATV">RAFIN/+45.0-50.0/+47.0-40.0/+49.0-30.0/+51.0-20.0/DINIM/ELSOX</Airway>
+    <Airway Name="NATW">JAROM/TALGO/+44.0-50.0/+46.0-40.0/+48.0-30.0/+50.0-20.0/SOMAX/ATSUR</Airway>
+    <Airway Name="NATX">DOVEY/+42.0-60.0/+43.0-50.0/+45.0-40.0/+47.0-30.0/+49.0-20.0/BEDRA/NASBA</Airway>
+    <Airway Name="NATY">JOBOC/+41.0-60.0/+41.0-50.0/+40.0-40.0</Airway>
+    <Airway Name="NATZ">SOORY/+42.0-50.0/+44.0-40.0/+46.0-30.0/+48.0-20.0/+48.0-15.0/OMOKO/GUNSO</Airway>
+    <Airway Name="NATA">PIKIL/+57.0-20.0/+57.0-30.0/+56.0-40.0/+54.0-50.0/NEEKO</Airway>
+    <Airway Name="NATB">RESNO/+56.0-20.0/+56.0-30.0/+55.0-40.0/+53.0-50.0/RIKAL</Airway>
+    <Airway Name="NATC">DOGAL/+55.0-20.0/+55.0-30.0/+54.0-40.0/+52.0-50.0/TUDEP</Airway>
+    <Airway Name="NATD">MALOT/+54.0-20.0/+54.0-30.0/+53.0-40.0/+51.0-50.0/ALLRY</Airway>
+    <Airway Name="NATE">LIMRI/+53.0-20.0/+53.0-30.0/+52.0-40.0/+50.0-50.0/ELSIR</Airway>
+  </Airways>
+</Airspace>

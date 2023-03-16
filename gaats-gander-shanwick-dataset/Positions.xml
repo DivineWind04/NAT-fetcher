@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Positions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Position Name="Gander" Type="ASD" DefaultCenter="+540120.000-0295913.000" DefaultRange="3000">  
+    <Sectors>
+      <Sector Name="32" />	  
+    </Sectors>
+    <Maps>
+      <Map Name="FIR" />
+      <Map Name="GEO" />
+	  <Map Name="SECT" />
+	  <Map Name="FIX" />
+	  <Map Name="FIX NAME" />	  
+	  <Map Name="Grid" />	
+	  <Map Name="Tracks" />	  
+    </Maps>
+    <Strips Mode="Beacon" Sort="Level">
+    </Strips>
+    <CFL QuickLevel="999000" />
+    <ArrivalLists/>
+    <ControllerInfo>
+      <Line>"Shanwick Radio" or "Gander Radio"</Line>
+	  <Line>Covering Shanwick (EGGX) and Gander Oceanic (CZQX) OCAs.</Line>
+	  <Line>Oceanic Clearance on nattrak.vatsim.net. nattrak is not working well call me via voice on 131.900</Line>
+	  <Line>Pilot resources vats.im/czqotools</Line>
+	  <Line>Have some feedback? We'd love to hear it! vats.im/czqofeedback</Line>
+    </ControllerInfo>
+  </Position>
+</Positions>

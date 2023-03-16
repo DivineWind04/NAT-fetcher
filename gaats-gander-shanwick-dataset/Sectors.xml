@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Sectors xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Sector FullName="Shanwick_Gander" Frequency="131.900" Callsign="NAT_FSS" Name="32">  
+<Volumes>EGGX_SHANWICK-OCA_055_999,CZQXO_CZQO-NY_TRANSITION_055_600,CZQXO_GANDER-OCA_285_600,CZQXO_GANDER-OCA-LOW_055_285,CZQXO_GANDER-OCA-SONDRESTROM_195_285,CZQXO_GANDER-OCA-SONDRESTROM_285_600</Volumes> 
+  <ResponsibleSectors>GP,34</ResponsibleSectors>
+  </Sector>  
+  <Sector FullName="Gander Oceanic" Frequency="119.425" Callsign="CZQO_CTR" Name="GP">  
+<Volumes>CZQXO_CZQO-NY_TRANSITION_055_600,CZQXO_GANDER-OCA_285_600,CZQXO_GANDER-OCA-LOW_055_285,CZQXO_GANDER-OCA-SONDRESTROM_195_285,CZQXO_GANDER-OCA-SONDRESTROM_285_600</Volumes> 
+  </Sector> 
+  <Sector FullName="Shanwick Oceanic" Frequency="127.900" Callsign="EGGX_CTR" Name="34">  
+<Volumes>EGGX_SHANWICK-OCA_055_999</Volumes> 
+  </Sector>  
+</Sectors>

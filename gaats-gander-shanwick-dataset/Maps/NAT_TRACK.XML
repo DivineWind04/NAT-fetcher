@@ -1,0 +1,82 @@
+<Maps>
+  <Map Type="System" Name="Tracks" Priority="1" CustomColourName="OffWhite">
+    <Line>
+      <Point>NICSO/+48.000-050.000/+50.000-040.000/+52.000-030.000/+54.000-020.000/DOGAL/BEXET</Point>
+    </Line>
+    <Label>
+      <Point Name="S">NICSO</Point>
+    </Label>
+    <Line>
+      <Point>PORTI/+47.000-050.000/+49.000-040.000/+51.000-030.000/+53.000-020.000/MALOT/GISTI</Point>
+    </Line>
+    <Label>
+      <Point Name="T">PORTI</Point>
+    </Label>
+    <Line>
+      <Point>SUPRY/+46.000-050.000/+48.000-040.000/+50.000-030.000/+52.000-020.000/LIMRI/XETBO</Point>
+    </Line>
+    <Label>
+      <Point Name="U">SUPRY</Point>
+    </Label>
+    <Line>
+      <Point>RAFIN/+45.000-050.000/+47.000-040.000/+49.000-030.000/+51.000-020.000/DINIM/ELSOX</Point>
+    </Line>
+    <Label>
+      <Point Name="V">RAFIN</Point>
+    </Label>
+    <Line>
+      <Point>JAROM/TALGO/+44.000-050.000/+46.000-040.000/+48.000-030.000/+50.000-020.000/SOMAX/ATSUR</Point>
+    </Line>
+    <Label>
+      <Point Name="W">JAROM</Point>
+    </Label>
+    <Line>
+      <Point>DOVEY/+42.000-060.000/+43.000-050.000/+45.000-040.000/+47.000-030.000/+49.000-020.000/BEDRA/NASBA</Point>
+    </Line>
+    <Label>
+      <Point Name="X">DOVEY</Point>
+    </Label>
+    <Line>
+      <Point>JOBOC/+41.000-060.000/+41.000-050.000/+40.000-040.000</Point>
+    </Line>
+    <Label>
+      <Point Name="Y">JOBOC</Point>
+    </Label>
+    <Line>
+      <Point>SOORY/+42.000-050.000/+44.000-040.000/+46.000-030.000/+48.000-020.000/+48.000-015.000/OMOKO/GUNSO</Point>
+    </Line>
+    <Label>
+      <Point Name="Z">SOORY</Point>
+    </Label>
+    <Line>
+      <Point>PIKIL/+57.000-020.000/+57.000-030.000/+56.000-040.000/+54.000-050.000/NEEKO</Point>
+    </Line>
+    <Label>
+      <Point Name="A">PIKIL</Point>
+    </Label>
+    <Line>
+      <Point>RESNO/+56.000-020.000/+56.000-030.000/+55.000-040.000/+53.000-050.000/RIKAL</Point>
+    </Line>
+    <Label>
+      <Point Name="B">RESNO</Point>
+    </Label>
+    <Line>
+      <Point>DOGAL/+55.000-020.000/+55.000-030.000/+54.000-040.000/+52.000-050.000/TUDEP</Point>
+    </Line>
+    <Label>
+      <Point Name="C">DOGAL</Point>
+    </Label>
+    <Line>
+      <Point>MALOT/+54.000-020.000/+54.000-030.000/+53.000-040.000/+51.000-050.000/ALLRY</Point>
+    </Line>
+    <Label>
+      <Point Name="D">MALOT</Point>
+    </Label>
+    <Line>
+      <Point>LIMRI/+53.000-020.000/+53.000-030.000/+52.000-040.000/+50.000-050.000/ELSIR</Point>
+    </Line>
+    <Label>
+      <Point Name="E">LIMRI</Point>
+    </Label>
+  </Map>
+</Maps>
