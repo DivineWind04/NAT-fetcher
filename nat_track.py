@@ -152,7 +152,7 @@ def run(vatsys_maps_dir: str, output_filename: str):
     except Exception as e:
         error('could not fetch tracks')
         traceback.print_exc()
-        exit()
+        exit_error(find_vatsys_exec())
 
     try:
         maps_root, map_element = make_base_map_xml()
@@ -185,7 +185,7 @@ def run(vatsys_maps_dir: str, output_filename: str):
     except Exception:
         error('could not form XML')
         traceback.print_exc()
-        exit()
+        exit_error(find_vatsys_exec())
     
     # Write output XML
     try:
@@ -197,20 +197,29 @@ def run(vatsys_maps_dir: str, output_filename: str):
         traceback.print_exc()
         exit()
 
+def exit_error(exec_path):
+    if exec_path == False:
+        input('Error could not find vatsys. Open manually instead.')
+        exit()
+    else:
+        input('Error. Press ENTER to open vatSys anyway.')
+        subprocess.Popen([exec_path])
+        exit()
+
 
 if __name__ == '__main__':
 
     maps_dir = find_vatsys_maps_dir()
     if maps_dir is None:
         error('could not find suitable vatSys Maps folder for Gander/Shanwick profile')
-        exit()
+        exit_error(find_vatsys_exec())
     
     run(maps_dir, DEFAULT_FILENAME)
     
     exec_path = find_vatsys_exec()
     if exec_path is None:
         error('could not find suitable vatSys executable')
-        exit()
+        exit_error(False)
     else:
         log(f'opening vatSys executable at {exec_path}')
         subprocess.Popen([exec_path])
