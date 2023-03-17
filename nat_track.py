@@ -6,7 +6,6 @@ from lxml import etree
 from colorama import Fore, Back, Style
 from decimal import Decimal
 import traceback
-from time import time
 import subprocess
 
 VATSYS_MAPS_PATH_RELATIVE = r'vatSys Files\Profiles\gaats-gander-shanwick-dataset\Maps'
