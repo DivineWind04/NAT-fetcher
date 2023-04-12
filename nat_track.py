@@ -6,7 +6,6 @@ from lxml import etree
 from colorama import Fore, Back, Style
 from decimal import Decimal
 import traceback
-from time import time
 import subprocess
 
 VATSYS_MAPS_PATH_RELATIVE = r'vatSys Files\Profiles\gaats-gander-shanwick-dataset\Maps'
@@ -96,7 +95,9 @@ def make_base_map_xml(map_attributes: dict[str, str] = DEFAULT_MAP_ATTRIBUTES) -
     return (maps_root, map)
 
 def coord_to_str(coord):
-    coord = coord.split('/')
+    og_coord = coord
+    coord = og_coord.split('|')[0].split('/')
+
     coord_list = []
     for x in coord:
         
@@ -114,12 +115,12 @@ def coord_to_str(coord):
         leader = '+' if integer_part > 0 else ''
         coord_list.append(leader + integer_part_str + fractional_part_str)
 
-    
-    return ''.join(coord_list)
+    return f"{''.join(coord_list)}|{og_coord.split('|')[1]}"
 
 def conversion_func(coord) -> str:
-    if coord.find('/') != -1:
+    if coord.find('|') != -1 and coord.split('|')[0].find('/') != -1:
         return coord_to_str(coord)
+
     return coord
     
 
@@ -129,7 +130,13 @@ def make_poly_xml(track_line: list[list[float]]) -> etree.Element:
     point_element = etree.SubElement(poly_element, 'Point')
 
     point_strings = [conversion_func(coord) for coord in track_line]
-    point_element.text = '/'.join(point_strings)
+    clean_point_strings = []
+    for ps in point_strings:
+        if ps.find('|') != -1:
+            clean_point_strings.append(ps.split('|')[0])
+        else:
+            clean_point_strings.append(ps)
+    point_element.text = '/'.join(clean_point_strings)
 
     return poly_element
 
@@ -138,6 +145,9 @@ def make_label_xml(series_id_str, first_fix) -> etree.Element:
     
     point_element = etree.SubElement(label_element, 'Point')
     point_element.set('Name', series_id_str)
+    
+    if first_fix.find('|') != -1:
+        first_fix = first_fix.split('|')[1]
     point_element.text = first_fix
 
     return label_element
@@ -152,20 +162,21 @@ def run(vatsys_maps_dir: str, output_filename: str):
     except Exception as e:
         error('could not fetch tracks')
         traceback.print_exc()
-        exit()
+        exit_error(find_vatsys_exec())
 
     try:
         maps_root, map_element = make_base_map_xml()
 
         muff_poly_coords = []
         airspace = etree.Element('Airspace')
+        intersections = etree.SubElement(airspace, 'Intersections')
         airways = etree.SubElement(airspace, 'Airways')
         for tracks in tracks_json:
             airway = etree.SubElement(airways, 'Airway',Name=f"NAT{tracks['id']}")
 
             for track in tracks['route']:
                 if track['name'].find('/') != -1:
-                    muff_poly_coords.append(f"{track['latitude']}/{track['longitude']}")
+                    muff_poly_coords.append(f"{track['latitude']}/{track['longitude']}|N{track['name'].replace('/','W')}")
                 else:
                     muff_poly_coords.append(track['name'])
 
@@ -175,7 +186,19 @@ def run(vatsys_maps_dir: str, output_filename: str):
             map_element.append(label_xml)
 
             point_strings = [conversion_func(coord) for coord in muff_poly_coords]
-            airway.text = '/'.join(point_strings)
+            clean_point_strings = []
+            for ps in point_strings:
+                if ps.find('|') != -1:
+                    clean_point_strings.append(ps.split('|')[1])
+                    point = etree.SubElement(intersections, 'Point',Name=ps.split('|')[1], Type='Fix')
+                    point.text = ps.split('|')[0]
+                else:
+                    clean_point_strings.append(ps)
+
+            airway.text = '/'.join(clean_point_strings)
+
+
+
 
             muff_poly_coords.clear()
 
@@ -185,7 +208,7 @@ def run(vatsys_maps_dir: str, output_filename: str):
     except Exception:
         error('could not form XML')
         traceback.print_exc()
-        exit()
+        exit_error(find_vatsys_exec())
     
     # Write output XML
     try:
@@ -197,20 +220,29 @@ def run(vatsys_maps_dir: str, output_filename: str):
         traceback.print_exc()
         exit()
 
+def exit_error(exec_path):
+    if exec_path == False:
+        input('Error could not find vatsys. Open manually instead.')
+        exit()
+    else:
+        input('Error. Press ENTER to open vatSys anyway.')
+        subprocess.Popen([exec_path])
+        exit()
+
 
 if __name__ == '__main__':
 
     maps_dir = find_vatsys_maps_dir()
     if maps_dir is None:
         error('could not find suitable vatSys Maps folder for Gander/Shanwick profile')
-        exit()
+        exit_error(find_vatsys_exec())
     
     run(maps_dir, DEFAULT_FILENAME)
     
     exec_path = find_vatsys_exec()
     if exec_path is None:
         error('could not find suitable vatSys executable')
-        exit()
+        exit_error(False)
     else:
         log(f'opening vatSys executable at {exec_path}')
         subprocess.Popen([exec_path])

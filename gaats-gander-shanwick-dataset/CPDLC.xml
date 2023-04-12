@@ -198,22 +198,6 @@
     <Message Response="NE">NEXT DATA AUTHORITY [UNIT]</Message>
     <Message Response="NE">END SERVICE</Message>	
   </Category>
-  <Category name="OC" SendViaTM="true">
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] NAT [CODE] FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] NAT [CODE] CROSS [POSITION] NOT BEFORE [TIME]Z FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] NAT [CODE] CROSS [POSITION] NOT AFTER [TIME]Z FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] RANDOM POSITION [TEXT] [POS5] FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] [POSITION] FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] [POSITION] CROSS [POSITION] NOT BEFORE [TIME]Z FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-    <Message Response="WU">OCEANIC CLEARANCE [UNIT] [AC] CLRD TO [POSITION]</Message>
-	<Message Response="WU">VIA [POSITION] [POSITION] CROSS [POSITION] NOT AFTER [TIME]Z FM [POSITION] MNTN FL[LEVEL] M[SPEED]</Message>
-  </Category>  
   <Category name="WelcomeMsg" AutoloadElements="true" SendViaTM="true">
     <Message Response="R">THIS IS AN AUTOMATED MESSAGE TO CONFIRM CPDLC CONTACT WITH SHANWICK AND GANDER CENTER</Message>
   </Category>  

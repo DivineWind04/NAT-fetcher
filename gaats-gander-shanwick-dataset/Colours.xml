@@ -173,10 +173,10 @@
   </Colour>
   <Colour id="NonInteractiveText">
 		<Use>Non-Interactive Text</Use>
-		<Name>White</Name>
-		<R>255</R>
-		<G>255</G>
-		<B>255</B>
+		<Name>DarkGrey</Name>
+		<R>90</R>
+		<G>90</G>
+		<B>90</B>
 	</Colour>
   <Colour id="ASDBackground">
 		<Use>ASD Backgrounds</Use>

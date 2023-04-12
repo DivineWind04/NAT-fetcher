@@ -172,29 +172,6 @@
 		</PathGeometry>		
 	</TrackSymbol>
 	
-	<TrackSymbol Type="ADSB" SpecialCode="2000" RotateToTrack="True" StrokeWidth="0">
-		<PathGeometry>
-			<Figure Start="0,-8" FigureBegin="Filled" FigureEnd="Closed">
-				<Line>-1.5,-6</Line>
-				<Line>-1.5,-1.5</Line>
-				<Line>-9,3</Line>
-				<Line>-9,5</Line>
-				<Line>-1.5,3</Line>
-				<Line>-1.5,7</Line>
-				<Line>-4,10</Line>
-				<Line>-4,11</Line>
-				<Line>4,11</Line>
-				<Line>4,10</Line>
-				<Line>1.5,7</Line>				
-				<Line>1.5,3</Line>
-				<Line>9,5</Line>
-				<Line>9,3</Line>
-				<Line>1.5,-1.5</Line>
-				<Line>1.5,-6</Line>			
-			</Figure>			
-		</PathGeometry>
-	</TrackSymbol>
-	
 	<!--Flight plan hollow plane-->
 	<TrackSymbol Type="FlightPlan" RotateToTrack="True" StrokeWidth="1">
 		<PathGeometry>
