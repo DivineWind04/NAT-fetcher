@@ -4,6 +4,11 @@
     <Sectors>
       <Sector Name="32" />	  
     </Sectors>
+    <ManualVisibility>
+      <Point>+535400.000-0305300.000</Point>
+      <Point>+524900.000-0390100.000</Point>
+      <Point>+491000.000-0602800.000</Point>
+    </ManualVisibility>	
     <Maps>
       <Map Name="FIR" />
       <Map Name="GEO" />
